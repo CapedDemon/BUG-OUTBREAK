@@ -25,7 +25,8 @@ Make a folder and open git bash there. After that, clone this repository using t
 '''
 git clone https://github.com/Shreejan-35/BUG-OUTBREAK.git
 '''
-The run the main.py file.
+
+Then run the main.py file.
 
 # License
 License is **MIT**
