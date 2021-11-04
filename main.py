@@ -1,4 +1,5 @@
 import pygame
+import random
 
 # Pygame initialization
 pygame.init()
@@ -13,37 +14,59 @@ pygame.display.set_caption("BUG OUTBREAK")
 icon = pygame.image.load('images/fly.png')
 pygame.display.set_icon(icon)
 
-#Background Image
+# Background Image
 forest = pygame.image.load('images/forest.jpg')
 
-# Important variables and co-ordinates
+# Important variables and co-ordinates for player
 ychange = 0
-sprite_num =1
+sprite_num = 1
 x_cor = 75
 y_cor = 200
+
+# Enemy loading & Displaying
+worm = []
+fly_enemy = []
+beetle = []
+
+worm_x_cor = []
+worm_y_cor = []
+worm_x_change = []
+
+beetle_x_cor = []
+beetle_y_cor = []
+beetle_x_change = []
+beetle_y_change = []
+
+fly_x_cor = []
+fly_y_cor = []
+fly_x_change = []
+fly_y_change = []
+
+num_worm = 3
+num_earthworm = 3
+num_fly_enemy = 6
+num_beetle = 10
+total_enemies = 22
 
 # Game sprites
 uzi = pygame.image.load('images/uzi.png')
 bug_spray = pygame.image.load('images/bug-spray.png')
 shotgun = pygame.image.load('images/shotgun.png')
-worm = pygame.image.load('images/worm.png')
-earthworm = pygame.image.load('images/earthworm.png')
-fly_enemy = pygame.image.load('images/fly_enemy.png')
-beetle =  pygame.image.load('images/beetle.png')
+
 
 # Main Game loop
 running = True
 while running:
 
     # Drawing the background
-    screen.blit(forest, (0,0))
+    screen.blit(forest, (0, 0))
 
     for event in pygame.event.get():
         # Closing the game window
         if event.type == pygame.QUIT:
             running = False
         # Key is pressed
-        if event.type ==  pygame.KEYDOWN:
+        if event.type == pygame.KEYDOWN:
             # Changing the weapon
             if event.key == pygame.K_w:
                 if sprite_num <= 3:
@@ -52,15 +75,15 @@ while running:
                     sprite_num = 1
             # Taking the key responses
             elif event.key == pygame.K_UP:
-                ychange = -0.1
+                ychange = -10
             elif event.key == pygame.K_DOWN:
-                ychange = +0.1
+                ychange = 10
         # Key is realeased
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
                 ychange = 0
 
-    # Changin the weapons
+    # Changing the weapons
     if sprite_num == 1:
         screen.blit(uzi, (x_cor, y_cor))
     elif sprite_num == 2:
@@ -74,6 +97,60 @@ while running:
         y_cor = 0
     elif y_cor >= 354:
         y_cor = 354
-    
+
+    # Enemy Column
+    for i in range(total_enemies):# Making all the enemies by running a for loop of range of the total enemies
+
+        # Displaying the number of worms
+        for worms in range(num_worm):
+            worm.append(pygame.image.load('images/worm.png'))
+            worm_x_cor.append(random.randint(300, 700))
+            worm_y_cor.append(352)
+            screen.blit(worm[worms], (worm_x_cor[worms], worm_y_cor[worms]))
+            worm_x_change.append(0.1)
+            # Moving in the x co-ordinate only
+            worm_x_cor[worms] -= worm_x_change[worms]
+            if worm_x_cor[worms] <= 70:
+                worm_x_cor[worms] = 70
+
+        # Displaying the number of flies
+        for flies in range(num_fly_enemy):
+            fly_enemy.append(pygame.image.load('images/fly_enemy.png'))
+            fly_x_cor.append(random.randint(400, 600))
+            fly_y_cor.append(random.randint(0, 416))
+            screen.blit(fly_enemy[flies], (fly_x_cor[flies], fly_y_cor[flies]))
+            fly_x_change.append(70)
+            fly_y_change.append(0.2)
+
+            # Movement of the flies in the x co-ordinate as well as y co-ordinate
+            fly_y_cor[flies] -= fly_y_change[flies]
+            if fly_y_cor[flies] <=0 :
+                fly_y_change[flies] = -0.2
+                fly_x_cor[flies] -= fly_x_change[flies]
+            elif fly_y_cor[flies] >= 352:
+                fly_y_change[flies] = 0.2
+                fly_x_cor[flies] -= fly_x_change[flies]
+            
+        # Displaying the number of beetles
+        for beetles in range(num_beetle):
+            beetle.append(pygame.image.load('images/beetle.png'))
+            beetle_x_cor.append(random.randint(400, 600))
+            beetle_y_cor.append(random.randint(0, 416))
+            screen.blit(beetle[beetles], (beetle_x_cor[beetles], beetle_y_cor[beetles]))
+            beetle_x_change.append(70)
+            beetle_y_change.append(0.2)
+
+            # Movement of the beetles in the x co-ordinate as well as y co-ordinate
+            beetle_y_cor[beetles] -= beetle_y_change[beetles]
+            if beetle_y_cor[beetles] <= 0:
+                beetle_y_change[beetles] = -0.2
+                beetle_x_cor[beetles] -= beetle_x_change[beetles]
+            elif beetle_y_cor[beetles] >= 352:
+                beetle_y_change[beetles] = 0.2
+                beetle_x_cor[beetles] -= beetle_x_change[beetles]
+            
+                
+            
+
     # Updating the window
     pygame.display.update()
