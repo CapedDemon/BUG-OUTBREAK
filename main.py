@@ -53,6 +53,20 @@ uzi = pygame.image.load('images/uzi.png')
 bug_spray = pygame.image.load('images/bug-spray.png')
 shotgun = pygame.image.load('images/shotgun.png')
 
+#Bullet showing function
+bullet_num = 1
+bullet_state = "ready"
+bullet_x = x_cor
+bullet_y = y_cor
+def show_bullet(x_cor_bullet, y_cor_bullet, bulletNum):
+    global bullet_state
+    bullet_state = "fire"
+    if bulletNum == 1:
+        screen.blit(pygame.image.load('images/uzi_bullet.png'), (x_cor_bullet, y_cor_bullet))
+    elif bulletNum == 2:
+        screen.blit(pygame.image.load('images/smoke.png'), (x_cor_bullet + 30, y_cor_bullet-40))
+    elif bulletNum == 3:
+        screen.blit(pygame.image.load('images/shotgun_bullet.png'), (x_cor_bullet + 20, y_cor_bullet + 16))
 
 # Main Game loop
 running = True
@@ -67,17 +81,29 @@ while running:
             running = False
         # Key is pressed
         if event.type == pygame.KEYDOWN:
-            # Changing the weapon
+            # Changing the weapon as well as changing the bullet
             if event.key == pygame.K_w:
-                if sprite_num <= 3:
-                    sprite_num += 1
-                if sprite_num > 3:
-                    sprite_num = 1
+                if sprite_num <= 3 and bullet_num <= 3:
+                    if bullet_state == "ready":
+                        sprite_num += 1
+                        bullet_num += 1
+                elif sprite_num > 3 and bullet_num > 3:
+                    if bullet_state == "ready":
+                        sprite_num = 1
+                        bullet_num = 1
+                    
             # Taking the key responses
             elif event.key == pygame.K_UP:
                 ychange = -10
             elif event.key == pygame.K_DOWN:
                 ychange = 10
+            
+            #Bullet Appearance
+            elif event.key == pygame.K_SPACE:
+                bullet_num = sprite_num
+                if bullet_state == "ready":
+                    show_bullet(bullet_x, (bullet_y+5), bullet_num)
+            
         # Key is realeased
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
@@ -86,12 +112,15 @@ while running:
     # Changing the weapons
     if sprite_num == 1:
         screen.blit(uzi, (x_cor, y_cor))
+
     elif sprite_num == 2:
         screen.blit(bug_spray, (x_cor, y_cor))
+
     else:
         screen.blit(shotgun, (x_cor, y_cor))
 
-    # Changing the y co-ordinate and setting the boundaries
+
+    # Changing the y co-ordinate and setting the boundaries of players
     y_cor += ychange
     if y_cor <= 0:
         y_cor = 0
@@ -107,7 +136,7 @@ while running:
             worm_x_cor.append(random.randint(300, 700))
             worm_y_cor.append(352)
             screen.blit(worm[worms], (worm_x_cor[worms], worm_y_cor[worms]))
-            worm_x_change.append(0.1)
+            worm_x_change.append(0.2)
             # Moving in the x co-ordinate only
             worm_x_cor[worms] -= worm_x_change[worms]
             if worm_x_cor[worms] <= 70:
@@ -119,7 +148,7 @@ while running:
             fly_x_cor.append(random.randint(400, 600))
             fly_y_cor.append(random.randint(0, 416))
             screen.blit(fly_enemy[flies], (fly_x_cor[flies], fly_y_cor[flies]))
-            fly_x_change.append(70)
+            fly_x_change.append(85)
             fly_y_change.append(0.2)
 
             # Movement of the flies in the x co-ordinate as well as y co-ordinate
@@ -137,7 +166,7 @@ while running:
             beetle_x_cor.append(random.randint(400, 600))
             beetle_y_cor.append(random.randint(0, 416))
             screen.blit(beetle[beetles], (beetle_x_cor[beetles], beetle_y_cor[beetles]))
-            beetle_x_change.append(70)
+            beetle_x_change.append(85)
             beetle_y_change.append(0.2)
 
             # Movement of the beetles in the x co-ordinate as well as y co-ordinate
@@ -149,8 +178,13 @@ while running:
                 beetle_y_change[beetles] = 0.2
                 beetle_x_cor[beetles] -= beetle_x_change[beetles]
             
-                
-            
+    # Bullet movement
+    if bullet_x >= 626:
+        bullet_x = x_cor
+        bullet_state = "ready"
+    if bullet_state == "fire":
+        show_bullet(bullet_x, (bullet_y+5), bullet_num)
+        bullet_x += 15 
 
     # Updating the window
     pygame.display.update()
