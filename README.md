@@ -48,9 +48,9 @@ Enemies are:-
 - Earthworms 
 - Flies 
 
-1 shotgun bullet = 2 earthworm or 1 beetle(not work on fly)
-1 uzi fire = 1 beetle or 1 fly(not work on earthworm)
-1 bug spray = 2 fly(not work on earthworm and beetle)
+1 shotgun bullet = 1 earthworm(not work on fly and beetle)
+1 uzi fire = 1 beetle(not work on earthworm and fly)
+1 bug spray = 1 fly(not work on earthworm and beetle)
 
 (**After firing a bullet you can't change your gun**)
 
