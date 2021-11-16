@@ -16,6 +16,7 @@ Will you be able to save the whole world?
 - Version of language => 3.9.1
 - Libraries => pygame
 - Editor => VS Code
+**The game is built for the game off 2021. They have expected many bugs in the game as well as the game function. You will see the bugs soon while playing.**
 
 # Installation
 The minimum requirements needed in your computer:-
@@ -33,9 +34,11 @@ git clone https://github.com/Shreejan-35/BUG-OUTBREAK.git
 Then run the main.py file.
 
 # Instruction
-The game has 5 levels. After each level the number of insects increases.
+The game has **2** levels. The first level consists of many insects. It is really hard to complete the first level. The next level is the final level where you need to defeat the **BUG KING** and take the **BUG Stone**.
 But the damage of the weapon is fixed.
 Press the ↑ up arrow to move your weapon in the upside and pres the ↓ down arrow key to move the weapon downside. Press the W button to change your weapon.
+- In the first level you have 30 insects.
+- In the next level you only have one big insect and you have limited bullet.
 
 ︻┻┳══━一一一一一一
 The weapons you have are :-
