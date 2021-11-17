@@ -1,7 +1,7 @@
 import pygame
 import random
 import math
-import time
+from pygame import mixer
 
 # Pygame initialization and main loop variable
 running = True
@@ -52,7 +52,7 @@ fly_y_change = []
 fly_done = 0
 
 num_worm = 5
-num_fly_enemy = 10
+num_fly_enemy = 5
 num_beetle = 10
 total_enemies = num_beetle + num_fly_enemy + num_worm
 total_enemies_done = 0
@@ -103,6 +103,15 @@ def GameOver(x1, x, y):
             text = font.render("GAME OVER", True, (225, 225, 225))
             screen.blit(text, (x, y))
             running = False
+
+
+# Background Sound
+if total_enemies != 0:
+    mixer.music.load("musics/ES_Shinjuku - Leimoti.mp3")
+    mixer.music.play()
+else:
+    mixer.music.load("musics/ES_Fights - AGST.mp3")
+    mixer.music.play()
 
 # Main Game loop
 while running:
@@ -187,16 +196,16 @@ while running:
             fly_x_cor.append(random.randint(500, 600))
             fly_y_cor.append(random.randint(0, 416))
             screen.blit(fly_enemy[flies], (fly_x_cor[flies], fly_y_cor[flies]))
-            fly_x_change.append(85)
-            fly_y_change.append(0.3)
+            fly_x_change.append(65)
+            fly_y_change.append(0.2)
 
             # Movement of the flies in the x co-ordinate as well as y co-ordinate
             fly_y_cor[flies] -= fly_y_change[flies]
             if fly_y_cor[flies] <= 0:
-                fly_y_change[flies] = -0.3
+                fly_y_change[flies] = -0.2
                 fly_x_cor[flies] -= fly_x_change[flies]
             elif fly_y_cor[flies] >= 352:
-                fly_y_change[flies] = 0.3
+                fly_y_change[flies] = 0.2
                 fly_x_cor[flies] -= fly_x_change[flies]
 
             GameOver(fly_x_cor[flies], 10, 10)
@@ -208,16 +217,16 @@ while running:
             beetle_y_cor.append(random.randint(0, 416))
             screen.blit(beetle[beetles],
                         (beetle_x_cor[beetles], beetle_y_cor[beetles]))
-            beetle_x_change.append(85)
-            beetle_y_change.append(0.3)
+            beetle_x_change.append(65)
+            beetle_y_change.append(0.2)
 
             # Movement of the beetles in the x co-ordinate as well as y co-ordinate
             beetle_y_cor[beetles] -= beetle_y_change[beetles]
             if beetle_y_cor[beetles] <= 0:
-                beetle_y_change[beetles] = -0.3
+                beetle_y_change[beetles] = -0.2
                 beetle_x_cor[beetles] -= beetle_x_change[beetles]
             elif beetle_y_cor[beetles] >= 352:
-                beetle_y_change[beetles] = 0.3
+                beetle_y_change[beetles] = 0.2
                 beetle_x_cor[beetles] -= beetle_x_change[beetles]
 
             GameOver(beetle_x_cor[beetles], 10, 10)

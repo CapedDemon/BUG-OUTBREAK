@@ -14,7 +14,7 @@ Will you be able to save the whole world?
 # Configuration
 - Language => Python 
 - Version of language => 3.9.1
-- Libraries => pygame
+- Libraries => pygame, math, random & mixer.
 - Editor => VS Code
 **The game is built for the game off 2021. They have expected many bugs in the game as well as the game function. You will see the bugs soon while playing.**
 
