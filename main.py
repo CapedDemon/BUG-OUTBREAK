@@ -54,8 +54,8 @@ fly_done = 0
 num_worm = 5
 num_fly_enemy = 5
 num_beetle = 10
-total_enemies = num_beetle + num_fly_enemy + num_worm
-total_enemies_done = 0
+total_enemies = (num_beetle + num_fly_enemy + num_worm)
+total_enemies_done = False
 
 # Game sprites
 uzi = pygame.image.load('images/uzi.png')
@@ -75,12 +75,16 @@ def show_bullet(x_cor_bullet, y_cor_bullet, bulletNum):
     if bulletNum == 1:
         screen.blit(pygame.image.load('images/uzi_bullet.png'),
                     (x_cor_bullet+50, y_cor_bullet))
+        uzi_sound = mixer.Sound("musics/Gun shot uzi.mp3")
+        uzi_sound.play()
     elif bulletNum == 2:
         screen.blit(pygame.image.load('images/smoke.png'),
                     (x_cor_bullet + 30, y_cor_bullet-40))
     elif bulletNum == 3:
         screen.blit(pygame.image.load('images/shotgun_bullet.png'),
                     (x_cor_bullet + 100, y_cor_bullet + 25))
+        shotgun_sound = mixer.Sound("musics/Gun shot shotgun.mp3")
+        shotgun_sound.play()
 
 # Collision function
 def collisionDetect(enemyX, enemyY, bulletX, bulletY):
@@ -92,7 +96,7 @@ def collisionDetect(enemyX, enemyY, bulletX, bulletY):
         return False
 
 
-# Font and Game Over
+# Font and Game Over and score
 font = pygame.font.Font('freesansbold.ttf', 82)
 activate_over = True
 def GameOver(x1, x, y):
@@ -104,14 +108,9 @@ def GameOver(x1, x, y):
             screen.blit(text, (x, y))
             running = False
 
-
 # Background Sound
-if total_enemies != 0:
-    mixer.music.load("musics/ES_Shinjuku - Leimoti.mp3")
-    mixer.music.play()
-else:
-    mixer.music.load("musics/ES_Fights - AGST.mp3")
-    mixer.music.play()
+pygame.mixer.music.load("musics/ES_Fights - AGST.mp3")
+pygame.mixer.music.play(-1)
 
 # Main Game loop
 while running:
@@ -175,61 +174,61 @@ while running:
 
     # Enemy Column
     # Making all the enemies by running a for loop of range of the total enemies
+    if total_enemies_done == False:
+        for i in range(total_enemies):
 
-    for i in range(total_enemies):
+            # Displaying the number of worms
+            for worms in range(num_worm):
+                worm.append(pygame.image.load('images/worm.png'))
+                worm_x_cor.append(random.randint(500, 700))
+                worm_y_cor.append(352)
+                screen.blit(worm[worms], (worm_x_cor[worms], worm_y_cor[worms]))
+                worm_x_change.append(0.2)
+                # Moving in the x co-ordinate only
+                worm_x_cor[worms] -= worm_x_change[worms]
 
-        # Displaying the number of worms
-        for worms in range(num_worm):
-            worm.append(pygame.image.load('images/worm.png'))
-            worm_x_cor.append(random.randint(500, 700))
-            worm_y_cor.append(352)
-            screen.blit(worm[worms], (worm_x_cor[worms], worm_y_cor[worms]))
-            worm_x_change.append(0.2)
-            # Moving in the x co-ordinate only
-            worm_x_cor[worms] -= worm_x_change[worms]
+                GameOver(worm_x_cor[worms], 10, 10)
 
-            GameOver(worm_x_cor[worms], 10, 10)
+            # Displaying the number of flies
+            for flies in range(num_fly_enemy):
+                fly_enemy.append(pygame.image.load('images/fly_enemy.png'))
+                fly_x_cor.append(random.randint(500, 600))
+                fly_y_cor.append(random.randint(0, 416))
+                screen.blit(fly_enemy[flies], (fly_x_cor[flies], fly_y_cor[flies]))
+                fly_x_change.append(50)
+                fly_y_change.append(0.1)
 
-        # Displaying the number of flies
-        for flies in range(num_fly_enemy):
-            fly_enemy.append(pygame.image.load('images/fly_enemy.png'))
-            fly_x_cor.append(random.randint(500, 600))
-            fly_y_cor.append(random.randint(0, 416))
-            screen.blit(fly_enemy[flies], (fly_x_cor[flies], fly_y_cor[flies]))
-            fly_x_change.append(65)
-            fly_y_change.append(0.2)
+                # Movement of the flies in the x co-ordinate as well as y co-ordinate
+                fly_y_cor[flies] -= fly_y_change[flies]
+                if fly_y_cor[flies] <= 0:
+                    fly_y_change[flies] = -0.1
+                    fly_x_cor[flies] -= fly_x_change[flies]
+                elif fly_y_cor[flies] >= 352:
+                    fly_y_change[flies] = 0.1
+                    fly_x_cor[flies] -= fly_x_change[flies]
 
-            # Movement of the flies in the x co-ordinate as well as y co-ordinate
-            fly_y_cor[flies] -= fly_y_change[flies]
-            if fly_y_cor[flies] <= 0:
-                fly_y_change[flies] = -0.2
-                fly_x_cor[flies] -= fly_x_change[flies]
-            elif fly_y_cor[flies] >= 352:
-                fly_y_change[flies] = 0.2
-                fly_x_cor[flies] -= fly_x_change[flies]
+                GameOver(fly_x_cor[flies], 10, 10)
 
-            GameOver(fly_x_cor[flies], 10, 10)
+            # Displaying the number of beetles
+            for beetles in range(num_beetle):
+                beetle.append(pygame.image.load('images/beetle.png'))
+                beetle_x_cor.append(random.randint(500, 600))
+                beetle_y_cor.append(random.randint(0, 416))
+                screen.blit(beetle[beetles],
+                            (beetle_x_cor[beetles], beetle_y_cor[beetles]))
+                beetle_x_change.append(50)
+                beetle_y_change.append(0.1)
 
-        # Displaying the number of beetles
-        for beetles in range(num_beetle):
-            beetle.append(pygame.image.load('images/beetle.png'))
-            beetle_x_cor.append(random.randint(500, 600))
-            beetle_y_cor.append(random.randint(0, 416))
-            screen.blit(beetle[beetles],
-                        (beetle_x_cor[beetles], beetle_y_cor[beetles]))
-            beetle_x_change.append(65)
-            beetle_y_change.append(0.2)
+                # Movement of the beetles in the x co-ordinate as well as y co-ordinate
+                beetle_y_cor[beetles] -= beetle_y_change[beetles]
+                if beetle_y_cor[beetles] <= 0:
+                    beetle_y_change[beetles] = -0.1
+                    beetle_x_cor[beetles] -= beetle_x_change[beetles]
+                elif beetle_y_cor[beetles] >= 352:
+                    beetle_y_change[beetles] = 0.1
+                    beetle_x_cor[beetles] -= beetle_x_change[beetles]
 
-            # Movement of the beetles in the x co-ordinate as well as y co-ordinate
-            beetle_y_cor[beetles] -= beetle_y_change[beetles]
-            if beetle_y_cor[beetles] <= 0:
-                beetle_y_change[beetles] = -0.2
-                beetle_x_cor[beetles] -= beetle_x_change[beetles]
-            elif beetle_y_cor[beetles] >= 352:
-                beetle_y_change[beetles] = 0.2
-                beetle_x_cor[beetles] -= beetle_x_change[beetles]
-
-            GameOver(beetle_x_cor[beetles], 10, 10)
+                GameOver(beetle_x_cor[beetles], 10, 10)
 
     # Bullet movement
     if bullet_x >= 626:
@@ -290,6 +289,10 @@ while running:
                     beetle_x_change.pop(flies)
                     beetle_y_change.pop(flies)
                     num_beetle -= 1
+
+    # Logic for change in enemy
+    if total_enemies == 0:
+        total_enemies_done = True
 
     # Updating the window
     pygame.display.update()
