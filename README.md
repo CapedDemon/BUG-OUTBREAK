@@ -62,7 +62,7 @@ The credits goes to-
 - Sprite images are taken from **Flaticon** & **Freepik**
 - Music tracks are taken from **Royalty free Music Epidemic Sound**
 # License
-License is **MIT**
+License is **Apache-2.0**
 
 
 (The work will be in progress through the whole November month)
