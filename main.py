@@ -31,6 +31,8 @@ result2 = False
 result3 = False
 
 # Enemy loading & Displaying
+king = pygame.image.load('images/Honey Bee.png')
+
 worm = []
 fly_enemy = []
 beetle = []
@@ -87,6 +89,8 @@ def show_bullet(x_cor_bullet, y_cor_bullet, bulletNum):
         shotgun_sound.play()
 
 # Collision function
+
+
 def collisionDetect(enemyX, enemyY, bulletX, bulletY):
     d = math.sqrt((math.pow((enemyX - bulletX), 2)) +
                   (math.pow((enemyY - bulletY), 2)))
@@ -99,6 +103,8 @@ def collisionDetect(enemyX, enemyY, bulletX, bulletY):
 # Font and Game Over and score
 font = pygame.font.Font('freesansbold.ttf', 82)
 activate_over = True
+
+
 def GameOver(x1, x, y):
     global running
     global activate_over
@@ -108,12 +114,14 @@ def GameOver(x1, x, y):
             screen.blit(text, (x, y))
             running = False
 
+
 # Background Sound
 pygame.mixer.music.load("musics/ES_Fights - AGST.mp3")
 pygame.mixer.music.play(-1)
 
 # Main Game loop
 while running:
+    total_enemies = (num_beetle + num_fly_enemy + num_worm)
 
     # Drawing the background
     screen.blit(forest, (0, 0))
@@ -182,7 +190,8 @@ while running:
                 worm.append(pygame.image.load('images/worm.png'))
                 worm_x_cor.append(random.randint(500, 700))
                 worm_y_cor.append(352)
-                screen.blit(worm[worms], (worm_x_cor[worms], worm_y_cor[worms]))
+                screen.blit(
+                    worm[worms], (worm_x_cor[worms], worm_y_cor[worms]))
                 worm_x_change.append(0.2)
                 # Moving in the x co-ordinate only
                 worm_x_cor[worms] -= worm_x_change[worms]
@@ -194,7 +203,8 @@ while running:
                 fly_enemy.append(pygame.image.load('images/fly_enemy.png'))
                 fly_x_cor.append(random.randint(500, 600))
                 fly_y_cor.append(random.randint(0, 416))
-                screen.blit(fly_enemy[flies], (fly_x_cor[flies], fly_y_cor[flies]))
+                screen.blit(fly_enemy[flies],
+                            (fly_x_cor[flies], fly_y_cor[flies]))
                 fly_x_change.append(50)
                 fly_y_change.append(0.1)
 
@@ -229,6 +239,8 @@ while running:
                     beetle_x_cor[beetles] -= beetle_x_change[beetles]
 
                 GameOver(beetle_x_cor[beetles], 10, 10)
+    if(total_enemies <= 1):
+        screen.blit(king, (350, 60))
 
     # Bullet movement
     if bullet_x >= 626:
@@ -249,7 +261,7 @@ while running:
                     bullet_x = x_cor
                     bullet_y = y_cor
                     bullet_state = "ready"
-                    print(score)
+
                     worm.pop(worms)
                     worm_x_cor.pop(worms)
                     worm_y_cor.pop(worms)
@@ -265,7 +277,7 @@ while running:
                     bullet_x = x_cor
                     bullet_y = y_cor
                     bullet_state = "ready"
-                    print(score)
+
                     fly_enemy.pop(flies)
                     fly_x_cor.pop(flies)
                     fly_y_cor.pop(flies)
@@ -282,7 +294,7 @@ while running:
                     bullet_x = x_cor
                     bullet_y = y_cor
                     bullet_state = "ready"
-                    print(score)
+
                     beetle.pop(flies)
                     beetle_x_cor.pop(flies)
                     beetle_y_cor.pop(flies)
@@ -293,6 +305,8 @@ while running:
     # Logic for change in enemy
     if total_enemies == 0:
         total_enemies_done = True
+
+    print(total_enemies)
 
     # Updating the window
     pygame.display.update()
