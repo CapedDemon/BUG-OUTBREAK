@@ -2,6 +2,7 @@ import pygame
 import random
 import math
 from pygame import mixer
+import time
 
 # Pygame initialization and main loop variable
 running = True
@@ -118,6 +119,12 @@ def GameOver(x1, x, y):
 # Background Sound
 pygame.mixer.music.load("musics/ES_Fights - AGST.mp3")
 pygame.mixer.music.play(-1)
+
+
+# END GAME 
+def bug_stone(BUGx, BUGy):
+    Stone = pygame.image.load("images/BUG Stone.png")
+    screen.blit(Stone, (BUGx, BUGy))
 
 # Main Game loop
 while running:
@@ -239,8 +246,18 @@ while running:
                     beetle_x_cor[beetles] -= beetle_x_change[beetles]
 
                 GameOver(beetle_x_cor[beetles], 10, 10)
-    if(total_enemies <= 1):
+    if(total_enemies <= 2):
+        my_life = 20
         screen.blit(king, (350, 60))
+        bugstonex = random.randint(150, 300)
+        bugstoney = random.randint(0, 400)
+        bug_stone(bugstonex, bugstoney)
+        final_result = collisionDetect(bugstonex, bugstoney, bullet_x, bullet_y)
+        if final_result == True:
+            print("Yes")
+            running = False
+        else:
+            print("NO")
 
     # Bullet movement
     if bullet_x >= 626:
