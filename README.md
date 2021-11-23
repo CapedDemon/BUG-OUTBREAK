@@ -31,11 +31,19 @@ Make a folder and open git bash there. After that, clone this repository using t
 git clone https://github.com/Shreejan-35/BUG-OUTBREAK.git
 ```
 
-Then run the main.py file.
+Then run this command:- 
+```
+pip install requirements.txt
+```
+
+Then run the main.py file.(If python >3 installed)
+Or run the BUG.exe file.
 
 # Instruction
-The game has **2** levels. The first level consists of many insects. It is really hard to complete the first level. The next level is the final level where you need to defeat the **BUG KING** and take the **BUG Stone**.
-But the damage of the weapon is fixed.
+The game has **2** levels. The first level consists of many insects. It is really hard to complete the first level. The next level is the final level where you need to destroy the **BUG Stone**. Every 3 seconds later a wish is made by the **BUG King** due to the *BUG Stone* which takes your life line. If your life line becomes 0, you lose. If you collide any of the bullets with bUG Stone you win.
+If you win the console will print **Yes**
+Else it will print nothing.
+
 Press the ↑ up arrow to move your weapon in the upside and pres the ↓ down arrow key to move the weapon downside. Press the W button to change your weapon.
 - In the first level you have 30 insects.
 - In the next level you only have one big insect and you have limited bullet.
@@ -61,6 +69,7 @@ Enemies are:-
 The credits goes to-
 - Sprite images are taken from **Flaticon** & **Freepik**
 - Music tracks are taken from **Royalty free Music Epidemic Sound**
+- Fonts are taken form **1001fonts.com** and **special thanks to the font maker of quiglewiggly**
 # License
 License is **Apache-2.0**
 

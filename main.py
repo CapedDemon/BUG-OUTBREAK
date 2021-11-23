@@ -2,11 +2,13 @@ import pygame
 import random
 import math
 from pygame import mixer
-import time
+import pygame.freetype
 
 # Pygame initialization and main loop variable
+mixer.init()
 running = True
 pygame.init()
+pygame.freetype.init()
 
 #  creating the screen
 width = 626
@@ -22,6 +24,7 @@ pygame.display.set_icon(icon)
 forest = pygame.image.load('images/forest.jpg')
 
 # Important variables and co-ordinates for player
+my_life = 5
 score = 0
 ychange = 0
 sprite_num = 1
@@ -55,7 +58,7 @@ fly_y_change = []
 fly_done = 0
 
 num_worm = 5
-num_fly_enemy = 5
+num_fly_enemy = 10
 num_beetle = 10
 total_enemies = (num_beetle + num_fly_enemy + num_worm)
 total_enemies_done = False
@@ -78,7 +81,7 @@ def show_bullet(x_cor_bullet, y_cor_bullet, bulletNum):
     if bulletNum == 1:
         screen.blit(pygame.image.load('images/uzi_bullet.png'),
                     (x_cor_bullet+50, y_cor_bullet))
-        uzi_sound = mixer.Sound("musics/Gun shot uzi.mp3")
+        uzi_sound = mixer.Sound('musics/Gun-shot-uzi.wav')
         uzi_sound.play()
     elif bulletNum == 2:
         screen.blit(pygame.image.load('images/smoke.png'),
@@ -86,12 +89,10 @@ def show_bullet(x_cor_bullet, y_cor_bullet, bulletNum):
     elif bulletNum == 3:
         screen.blit(pygame.image.load('images/shotgun_bullet.png'),
                     (x_cor_bullet + 100, y_cor_bullet + 25))
-        shotgun_sound = mixer.Sound("musics/Gun shot shotgun.mp3")
+        shotgun_sound = mixer.Sound("musics/Gun-shot-shotgun.wav")
         shotgun_sound.play()
 
 # Collision function
-
-
 def collisionDetect(enemyX, enemyY, bulletX, bulletY):
     d = math.sqrt((math.pow((enemyX - bulletX), 2)) +
                   (math.pow((enemyY - bulletY), 2)))
@@ -100,31 +101,26 @@ def collisionDetect(enemyX, enemyY, bulletX, bulletY):
     else:
         return False
 
-
 # Font and Game Over and score
-font = pygame.font.Font('freesansbold.ttf', 82)
+font = pygame.freetype.Font('Fonts/QUIGLEYW.ttf', 40)
 activate_over = True
-
 
 def GameOver(x1, x, y):
     global running
     global activate_over
     if activate_over == False:
         if x1 < 75 and x1 > 0:
-            text = font.render("GAME OVER", True, (225, 225, 225))
-            screen.blit(text, (x, y))
+            font.render_to(screen, (x, y), "GAME OVER", (225, 225, 225))
             running = False
-
-
-# Background Sound
-pygame.mixer.music.load("musics/ES_Fights - AGST.mp3")
-pygame.mixer.music.play(-1)
-
 
 # END GAME 
 def bug_stone(BUGx, BUGy):
     Stone = pygame.image.load("images/BUG Stone.png")
     screen.blit(Stone, (BUGx, BUGy))
+
+# Game sound
+mixer.music.load("musics/ES_Fights - AGST.wav")
+mixer.music.play(-1)
 
 # Main Game loop
 while running:
@@ -153,9 +149,9 @@ while running:
 
             # Taking the key responses
             elif event.key == pygame.K_UP:
-                ychange = -20
+                ychange = -25
             elif event.key == pygame.K_DOWN:
-                ychange = 20
+                ychange = 25
 
             # Bullet Appearance
             elif event.key == pygame.K_SPACE:
@@ -212,16 +208,16 @@ while running:
                 fly_y_cor.append(random.randint(0, 416))
                 screen.blit(fly_enemy[flies],
                             (fly_x_cor[flies], fly_y_cor[flies]))
-                fly_x_change.append(50)
-                fly_y_change.append(0.1)
+                fly_x_change.append(65)
+                fly_y_change.append(0.2)
 
                 # Movement of the flies in the x co-ordinate as well as y co-ordinate
                 fly_y_cor[flies] -= fly_y_change[flies]
                 if fly_y_cor[flies] <= 0:
-                    fly_y_change[flies] = -0.1
+                    fly_y_change[flies] = -0.2
                     fly_x_cor[flies] -= fly_x_change[flies]
                 elif fly_y_cor[flies] >= 352:
-                    fly_y_change[flies] = 0.1
+                    fly_y_change[flies] = 0.2
                     fly_x_cor[flies] -= fly_x_change[flies]
 
                 GameOver(fly_x_cor[flies], 10, 10)
@@ -233,39 +229,49 @@ while running:
                 beetle_y_cor.append(random.randint(0, 416))
                 screen.blit(beetle[beetles],
                             (beetle_x_cor[beetles], beetle_y_cor[beetles]))
-                beetle_x_change.append(50)
-                beetle_y_change.append(0.1)
+                beetle_x_change.append(65)
+                beetle_y_change.append(0.2)
 
                 # Movement of the beetles in the x co-ordinate as well as y co-ordinate
                 beetle_y_cor[beetles] -= beetle_y_change[beetles]
                 if beetle_y_cor[beetles] <= 0:
-                    beetle_y_change[beetles] = -0.1
+                    beetle_y_change[beetles] = -0.2
                     beetle_x_cor[beetles] -= beetle_x_change[beetles]
                 elif beetle_y_cor[beetles] >= 352:
-                    beetle_y_change[beetles] = 0.1
+                    beetle_y_change[beetles] = 0.2
                     beetle_x_cor[beetles] -= beetle_x_change[beetles]
 
                 GameOver(beetle_x_cor[beetles], 10, 10)
-    if(total_enemies <= 2):
-        my_life = 20
+
+    # End Game
+    if(total_enemies <= 4):
+        # Displaying the king and bugstone
+        font.render_to(screen, (0,0), "Life:" + str(my_life), (255, 255, 255))
         screen.blit(king, (350, 60))
         bugstonex = random.randint(150, 300)
         bugstoney = random.randint(0, 400)
         bug_stone(bugstonex, bugstoney)
         final_result = collisionDetect(bugstonex, bugstoney, bullet_x, bullet_y)
+
+        # If bugstone get shoot, the user wins the game.
         if final_result == True:
+            font.render_to(screen, (10, 10), "CONGRATULATIONS", (255, 255, 255))
             print("Yes")
             running = False
-        else:
-            print("NO")
-
+        
+        # Every random time the king wishes the life of player decreases.
+        if random.randrange(0, 3*60) == 1:
+            my_life = my_life - 1
+        if my_life == 0:
+            running = False
+        
     # Bullet movement
     if bullet_x >= 626:
         bullet_x = x_cor
         bullet_state = "ready"
     if bullet_state == "fire":
         show_bullet(bullet_x, (bullet_y+5), bullet_num)
-        bullet_x += 15
+        bullet_x += 20
 
     # Collision
     for j in range(total_enemies):
