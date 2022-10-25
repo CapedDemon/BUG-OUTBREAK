@@ -28,7 +28,7 @@ The minimum requirements needed in your computer:-
 Make a folder and open git bash there. After that, clone this repository using the below command:- 
 
 ```
-git clone https://github.com/Shreejan-35/BUG-OUTBREAK.git
+git clone https://github.com/CapedDemon/BUG-OUTBREAK.git
 ```
 
 Then run this command:- 
